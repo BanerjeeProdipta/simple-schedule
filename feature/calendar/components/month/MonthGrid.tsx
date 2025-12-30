@@ -8,7 +8,6 @@ interface Props {
 
 export function MonthGrid({ date }: Props) {
   const days: DayCell[] = computeMonthGrid(date);
-  console.log({ days });
 
   return (
     <div className="relative overflow-hidden">
@@ -18,6 +17,7 @@ export function MonthGrid({ date }: Props) {
             key={day.date.toISOString()}
             day={day}
             height={day.height}
+            isMonth={true}
           />
         ))}
       </div>

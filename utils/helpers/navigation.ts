@@ -5,6 +5,13 @@ function clampDay(year: number, month: number, day: number): number {
   return Math.min(day, lastDayOfMonth);
 }
 
+function getSunday(date: Date): Date {
+  const d = new Date(date);
+  const day = d.getDay(); // 0 = Sunday
+  d.setDate(d.getDate() - day);
+  return d;
+}
+
 export function getPrevDate(view: CalendarView, date: Date): Date {
   let year = date.getFullYear();
   let month = date.getMonth();
@@ -14,7 +21,9 @@ export function getPrevDate(view: CalendarView, date: Date): Date {
     case 'day':
       return new Date(date.getTime() - 86400000); // -1 day in ms
     case 'week':
-      return new Date(date.getTime() - 7 * 86400000); // -7 days
+      const sunday = getSunday(date);
+      sunday.setDate(sunday.getDate() - 7);
+      return sunday;
     case 'month':
       month -= 1;
       if (month < 0) {
@@ -34,8 +43,11 @@ export function getNextDate(view: CalendarView, date: Date): Date {
   switch (view) {
     case 'day':
       return new Date(date.getTime() + 86400000); // +1 day in ms
-    case 'week':
-      return new Date(date.getTime() + 7 * 86400000); // +7 days
+    case 'week': {
+      const sunday = getSunday(date);
+      sunday.setDate(sunday.getDate() + 7);
+      return sunday;
+    }
     case 'month':
       month += 1;
       if (month > 11) {

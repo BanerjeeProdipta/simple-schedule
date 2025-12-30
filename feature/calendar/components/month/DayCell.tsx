@@ -3,9 +3,10 @@ import { DayCell } from '@/types';
 interface Props {
   day: DayCell;
   height: number;
+  isMonth?: boolean;
 }
 
-export function DayCellComponent({ day, height }: Props) {
+export function DayCellComponent({ day, height, isMonth }: Props) {
   let cellClass =
     'flex w-full h-full items-center justify-center text-sm cursor-pointer bg-background';
 
@@ -15,13 +16,17 @@ export function DayCellComponent({ day, height }: Props) {
 
   return (
     <div className={cellClass} style={{ height: `${height}rem` }}>
-      <span
-        className={`flex items-center justify-center w-8 h-8 ${
-          isToday ? 'bg-primary text-white rounded-full' : ''
-        }`}
-      >
-        {day.date.getDate()}
-      </span>
+      {isMonth ? (
+        <span
+          className={`flex items-center justify-center w-8 h-8 ${
+            isToday ? 'bg-primary text-white rounded-full' : ''
+          }`}
+        >
+          {day.date.getDate()}
+        </span>
+      ) : (
+        ''
+      )}
     </div>
   );
 }

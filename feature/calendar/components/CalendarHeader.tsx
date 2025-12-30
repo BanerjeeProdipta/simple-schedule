@@ -22,7 +22,7 @@ export function CalendarHeader() {
 
   const firstSegment = pathname.split('/')[1] || 'month';
   const view: CalendarView = pathToViewMap[firstSegment] || 'month';
-
+  console.log({ view });
   const year = params.year ? Number(params.year) : today.getFullYear();
   const month = params.month ? Number(params.month) : today.getMonth() + 1;
   const day = params.day ? Number(params.day) : today.getDate();
@@ -42,6 +42,7 @@ export function CalendarHeader() {
         <Button
           variant="ghost"
           size="icon"
+          title={`Previous ${view}`}
           onClick={() => navigate(getPrevDate(view, date))}
         >
           <ChevronLeft />
@@ -50,6 +51,7 @@ export function CalendarHeader() {
         <Button
           variant="ghost"
           size="icon"
+          title={`Next ${view}`}
           onClick={() => navigate(getNextDate(view, date))}
         >
           <ChevronRight />
@@ -61,6 +63,28 @@ export function CalendarHeader() {
             year: 'numeric',
           })}
         </h2>
+      </div>
+      <div className="flex items-center">
+        {Object.values(pathToViewMap).map((v) => {
+          const isActive = view === v;
+
+          return (
+            <Button
+              key={v}
+              size="sm"
+              className={`capitalize px-3 transition-all duration-200 
+                first:rounded-l-md! rounded-none! last:rounded-r-md!
+                ${
+                  isActive
+                    ? 'shadow-sm bg-primary'
+                    : 'bg-muted text-gray-500! hover:bg-gray-300! hover:text-gray-700! transition'
+                }`}
+              onClick={() => navigate(date, v)}
+            >
+              {v}
+            </Button>
+          );
+        })}
       </div>
     </div>
   );
