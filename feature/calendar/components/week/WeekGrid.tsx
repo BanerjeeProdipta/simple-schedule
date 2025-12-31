@@ -1,4 +1,4 @@
-import { DayCellComponent } from '../month/DayCell';
+import { DayCellComponent } from '../shared/DayCell';
 import { computeWeekGrid } from '@/utils/helpers/computeWeekGrid';
 
 interface Props {
@@ -14,7 +14,7 @@ export function WeekGrid({ date }: Props) {
       {hours.map((hour) => (
         <div
           key={`hour-${hour}`}
-          className="grid grid-cols-8 gap-px not-last:mb-px"
+          className="grid grid-cols-[12rem_repeat(7,1fr)] gap-px my-px"
         >
           <div className="flex items-center justify-center text-xs text-center px-1 gap-px bg-white">
             {hour}:00
@@ -23,8 +23,8 @@ export function WeekGrid({ date }: Props) {
             return (
               <DayCellComponent
                 key={day.date.toISOString()}
-                day={day}
-                height={day.height}
+                date={day.date}
+                cellHeight={day.cellHeight}
               />
             );
           })}

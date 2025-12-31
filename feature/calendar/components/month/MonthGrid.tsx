@@ -1,5 +1,5 @@
 import { computeMonthGrid } from '@/utils/helpers/computeMonthGrid';
-import { DayCellComponent } from './DayCell';
+import { DayCellComponent } from '../shared/DayCell';
 import { DayCell } from '@/types';
 
 interface Props {
@@ -15,9 +15,9 @@ export function MonthGrid({ date }: Props) {
         {days.map((day) => (
           <DayCellComponent
             key={day.date.toISOString()}
-            day={day}
-            height={day.height}
-            isMonth={true}
+            date={day.date}
+            cellHeight={day.cellHeight}
+            isMonthView={true}
           />
         ))}
       </div>

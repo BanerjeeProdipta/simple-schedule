@@ -1,30 +1,32 @@
+import { startOfMonth, endOfMonth, getDay, subDays, addDays } from 'date-fns';
 import { DayCell } from '@/types';
-import { generateDateGrid } from '.';
 
 export const computeMonthGrid = (
   date: Date,
   totalGridHeight = 28,
   cols = 7
 ): DayCell[] => {
-  const year = date.getFullYear();
-  const month = date.getMonth();
+  const firstDayOfMonth = startOfMonth(date);
+  const lastDayOfMonth = endOfMonth(date);
 
-  const firstDayOfMonth = new Date(year, month, 1);
-  const lastDayOfMonth = new Date(year, month + 1, 0);
-
-  const startDay = firstDayOfMonth.getDay(); // Sunday = 0
+  const startDay = getDay(firstDayOfMonth); // 0 = Sunday
   const totalDays = lastDayOfMonth.getDate();
 
   const totalCellsCount = startDay + totalDays;
   const rows = totalCellsCount <= 28 ? 4 : totalCellsCount <= 35 ? 5 : 6;
 
-  // Anchor start date for grid (Sunday before month start)
-  const gridStartDate = new Date(year, month, 1 - startDay);
+  const rowHeight = totalGridHeight / rows;
 
-  return generateDateGrid({
-    startDate: gridStartDate,
-    totalCells: rows * cols,
-    anchorMonth: month,
-    rowHeight: totalGridHeight / rows,
+  const gridStartDate = subDays(firstDayOfMonth, startDay);
+
+  const cells: DayCell[] = Array.from({ length: rows * cols }, (_, i) => {
+    const d = addDays(gridStartDate, i);
+
+    return {
+      date: d,
+      cellHeight: rowHeight,
+    };
   });
+
+  return cells;
 };

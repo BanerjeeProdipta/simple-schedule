@@ -1,4 +1,4 @@
-import { MonthView } from '@/feature/calendar/components/month';
+import { MonthView } from '@/feature/calendar/components/month/MonthView';
 
 export default async function Home({
   params,

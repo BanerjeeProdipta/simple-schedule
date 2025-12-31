@@ -8,7 +8,7 @@ interface Props {
 export function WeekView({ date }: Props) {
   return (
     <div className="overflow-hidden bg-muted">
-      <WeekdayHeader weekView date={date} />
+      <WeekdayHeader date={date} />
       <WeekGrid date={date} />
     </div>
   );

@@ -1,31 +1,30 @@
+import { isSameMonth as isSameMonthFn, isToday as isTodayFn } from 'date-fns';
 import { WEEKDAYS } from '@/utils/constants/calendar';
 import { computeWeekGrid } from '@/utils/helpers/computeWeekGrid';
 import clsx from 'clsx';
 
 interface Props {
-  weekView?: boolean;
   date: Date;
 }
 
-const WeekdayHeader = ({ weekView = false, date }: Props) => {
+const WeekdayHeader = ({ date }: Props) => {
   const weekDates = computeWeekGrid(date);
 
   return (
-    <div
-      className={`grid ${
-        weekView ? 'grid-cols-8' : 'grid-cols-7'
-      } gap-px my-px`}
-    >
-      {weekView && <div className="bg-background" />}
+    <div className="grid grid-cols-[12rem_repeat(7,1fr)] gap-px my-px">
+      {/* first fixed column for time */}
+      <div className="bg-background" />
 
       {weekDates.map((day) => {
         const dayIndex = day.date.getDay();
+        const isCurrentMonth = isSameMonthFn(day.date, date); // compare to anchor date month
+        const isToday = isTodayFn(day.date);
 
         return (
           <div
             key={day.date.toISOString()}
             className={clsx(
-              day.currentMonth ? 'bg-background' : 'bg-gray-50',
+              isCurrentMonth ? 'bg-background' : 'bg-gray-50',
               'text-xs font-medium text-center py-2'
             )}
           >
@@ -33,9 +32,9 @@ const WeekdayHeader = ({ weekView = false, date }: Props) => {
 
             <div className="text-sm font-normal">
               <span
-                className={`flex items-center justify-center w-8 h-8 mx-auto
-                  ${day.isToday ? 'bg-primary text-white rounded-full' : ''}
-                `}
+                className={`flex items-center justify-center w-8 h-8 mx-auto ${
+                  isToday ? 'bg-primary text-white rounded-full' : ''
+                }`}
               >
                 {day.date.getDate()}
               </span>

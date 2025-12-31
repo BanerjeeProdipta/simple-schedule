@@ -1,6 +1,6 @@
-import { MonthView } from '@/feature/calendar/components/month/MonthView';
+import { DayView } from '@/feature/calendar/components/day/DayView';
 
-export default async function MonthPage({
+export default async function WeekPage({
   params,
 }: {
   params: Promise<{ year: string; month: string; day: string }>;
@@ -13,5 +13,5 @@ export default async function MonthPage({
 
   const date = new Date(yearNum, monthNum - 1, dayNum);
 
-  return <MonthView date={date} />;
+  return <DayView date={date} />;
 }

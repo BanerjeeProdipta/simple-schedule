@@ -1,20 +1,15 @@
 import { DayCell } from '@/types';
-import { normalizeDate, isToday } from '.';
+import { startOfWeek, addDays } from 'date-fns';
 
 export function computeWeekGrid(date: Date): DayCell[] {
-  const anchorMonth = date.getMonth();
-  const sunday = normalizeDate(date);
-  sunday.setDate(sunday.getDate() - sunday.getDay());
+  const weekStart = startOfWeek(date, { weekStartsOn: 0 }); // Sunday
 
-  return Array.from({ length: 7 }, (_, i) => {
-    const d = normalizeDate(new Date(sunday));
-    d.setDate(sunday.getDate() + i);
+  return Array.from({ length: 7 }, (_, i): DayCell => {
+    const d = addDays(weekStart, i);
 
     return {
       date: d,
-      isToday: isToday(d),
-      currentMonth: d.getMonth() === anchorMonth,
-      height: 3,
+      cellHeight: 2,
     };
   });
 }

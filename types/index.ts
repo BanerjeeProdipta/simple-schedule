@@ -13,7 +13,12 @@ export interface CalendarPageProps {
 
 export interface DayCell {
   date: Date;
-  currentMonth: boolean;
-  isToday: boolean;
-  height: number;
+  cellHeight: number;
+}
+
+export interface GenerateGridOptions {
+  startDate: Date;
+  totalCells: number;
+  anchorMonth?: number;
+  rowHeight?: number;
 }
