@@ -12,7 +12,7 @@ export function DayCellComponent({ date, cellHeight, isMonthView }: Props) {
   const isCurrentMonth = isSameMonthFn(date, today);
 
   let cellClass =
-    'flex w-full h-full items-center justify-center text-sm cursor-pointer bg-background';
+    'flex w-full h-full items-center justify-center text-sm cursor-pointer bg-background hover:bg-gray-50 transition';
 
   if (!isCurrentMonth) cellClass += ' bg-gray-50 text-gray-500';
 

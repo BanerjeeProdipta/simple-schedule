@@ -1,4 +1,3 @@
-import { computeDayGrid } from '@/utils/helpers/computeDayGrid';
 import { DayCellComponent } from '../shared/DayCell';
 
 interface Props {
@@ -7,7 +6,7 @@ interface Props {
 
 export function DayGrid({ date }: Props) {
   const hours = Array.from({ length: 24 }, (_, i) => i);
-  const day = computeDayGrid(date);
+  const day = { date: date, cellHeight: 2 };
 
   return (
     <>

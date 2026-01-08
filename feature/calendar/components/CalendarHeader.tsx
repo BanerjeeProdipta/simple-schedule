@@ -22,7 +22,6 @@ export function CalendarHeader() {
 
   const firstSegment = pathname.split('/')[1] || 'month';
   const view: CalendarView = pathToViewMap[firstSegment] || 'month';
-  console.log({ view });
   const year = params.year ? Number(params.year) : today.getFullYear();
   const month = params.month ? Number(params.month) : today.getMonth() + 1;
   const day = params.day ? Number(params.day) : today.getDate();
