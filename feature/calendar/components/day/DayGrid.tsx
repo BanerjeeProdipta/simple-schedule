@@ -1,4 +1,4 @@
-import { DayCellComponent } from '../shared/DayCell';
+import CellComponent from '../shared/CellComponent';
 
 interface Props {
   date: Date;
@@ -6,22 +6,31 @@ interface Props {
 
 export function DayGrid({ date }: Props) {
   const hours = Array.from({ length: 24 }, (_, i) => i);
-  const day = { date: date, cellHeight: 2 };
 
   return (
-    <>
-      {hours.map((hour) => (
-        <div
-          key={hour}
-          className="grid grid-cols-[12rem_1fr] gap-px not-last:mb-px"
-        >
-          <div className="flex items-center justify-center text-xs bg-white">
-            {hour}:00
-          </div>
+    <div className="flex flex-col">
+      {hours.map((hour) => {
+        const cellDate = new Date(date);
+        cellDate.setHours(hour, 0, 0, 0);
 
-          <DayCellComponent date={day.date} cellHeight={day.cellHeight} />
-        </div>
-      ))}
-    </>
+        return (
+          <div
+            key={hour}
+            className="grid grid-cols-[12rem_1fr] gap-px not-last:mb-px"
+          >
+            <div className="flex items-center justify-center text-xs bg-white">
+              {hour}:00
+            </div>
+
+            <CellComponent
+              date={cellDate}
+              cellHeight={2}
+              index={hour}
+              isMonthView={false}
+            />
+          </div>
+        );
+      })}
+    </div>
   );
 }
