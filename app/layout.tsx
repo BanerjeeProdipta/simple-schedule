@@ -6,6 +6,7 @@ import { Card, CardContent } from '@/feature/shared/card';
 import AnimationWrapper from '@/feature/shared/animation/AnimationWrapper';
 
 import './globals.css';
+import ModalRenderer from '@/feature/shared/modal/ModalRenderer';
 
 const geistSans = Geist({
   variable: '--font-geist-sans',
@@ -42,6 +43,7 @@ export default function RootLayout({
           <CardContent>
             <CalendarHeader />
             <AnimationWrapper>{children}</AnimationWrapper>
+            <ModalRenderer />
           </CardContent>
         </Card>
       </body>

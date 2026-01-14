@@ -7,7 +7,7 @@ interface Props {
   date: Date;
   cellHeight: number;
   isMonthView?: boolean;
-  index: number; // unique global index
+  index: number;
 }
 
 export default function CellComponent({
@@ -16,24 +16,23 @@ export default function CellComponent({
   isMonthView,
   index,
 }: Props) {
-  const ref = useCellDrag(index);
+  const { ref } = useCellDrag(index, date);
 
   const today = new Date();
   const isCurrentMonth = isSameMonth(date, today);
   const isTodayFlag = isToday(date);
 
-  // Base classes
   const className = [
     'flex w-full h-full items-center justify-center text-sm cursor-pointer transition select-none',
-    'bg-background', // default background
-    !isCurrentMonth && 'opacity-50 text-gray-500', // faded out-of-month
+    'bg-background',
+    !isCurrentMonth && 'opacity-50 text-gray-500',
   ]
     .filter(Boolean)
     .join(' ');
 
   return (
     <div ref={ref} className={className} style={{ height: `${cellHeight}rem` }}>
-      {isMonthView ? (
+      {isMonthView && (
         <span
           className={`flex w-8 h-8 items-center justify-center ${
             isTodayFlag ? 'bg-primary text-white rounded-full' : ''
@@ -41,8 +40,6 @@ export default function CellComponent({
         >
           {date.getDate()}
         </span>
-      ) : (
-        <></>
       )}
     </div>
   );

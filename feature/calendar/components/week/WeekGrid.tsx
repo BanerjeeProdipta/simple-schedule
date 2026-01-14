@@ -15,10 +15,7 @@ export function WeekGrid({ date }: Props) {
       {/* Hour labels */}
       {hours.map((hour) => (
         <React.Fragment key={hour}>
-          <div
-            key={`hour-${hour}`}
-            className="flex items-center justify-center text-xs bg-white"
-          >
+          <div className="flex items-center justify-center text-xs bg-white">
             {hour}:00
           </div>
 
