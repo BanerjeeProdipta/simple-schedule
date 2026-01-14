@@ -1,5 +1,4 @@
 'use client';
-
 import { useRef, useEffect } from 'react';
 import { useSelectionStore } from '@/store/selection';
 
@@ -7,10 +6,14 @@ let isDragging = false;
 let dragStartIndex = -1;
 let dragEndIndex = -1;
 const cells: Array<HTMLDivElement | null> = [];
+const cellDates: Date[] = [];
 
 export function useCellDrag(index: number, date: Date) {
   const ref = useRef<HTMLDivElement>(null);
   const openSelection = useSelectionStore((s) => s.open);
+
+  // Store this cell's date in the global array
+  cellDates[index] = date;
 
   function updateSelection(fromIdx: number, toIdx: number) {
     const start = Math.min(fromIdx, toIdx);
@@ -49,13 +52,10 @@ export function useCellDrag(index: number, date: Date) {
       const start = Math.min(dragStartIndex, dragEndIndex);
       const end = Math.max(dragStartIndex, dragEndIndex);
 
-      const startDate = cells[start]?.dataset.date
-        ? new Date(cells[start]!.dataset.date!)
-        : date;
+      const startDate = cellDates[start];
+      const endDate = cellDates[end];
 
-      const endDate = cells[end]?.dataset.date
-        ? new Date(cells[end]!.dataset.date!)
-        : date;
+      console.log({ startDate, endDate, start, end });
 
       openSelection(startDate, endDate);
 
