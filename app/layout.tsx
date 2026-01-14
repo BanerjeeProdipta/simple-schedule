@@ -6,7 +6,7 @@ import { Card, CardContent } from '@/feature/shared/card';
 import AnimationWrapper from '@/feature/shared/animation/AnimationWrapper';
 
 import './globals.css';
-import ModalRenderer from '@/feature/shared/modal/ModalRenderer';
+import ModalRenderer from '@/feature/shared/dialog/ModalRenderer';
 
 const geistSans = Geist({
   variable: '--font-geist-sans',

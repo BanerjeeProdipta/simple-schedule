@@ -1,7 +1,7 @@
 'use client';
 
 import { useSelectionStore } from '@/store/selection';
-import { Modal } from '.';
+import { SelectionModal } from './modal';
 
 const ModalRenderer = () => {
   const { isOpen, startDate, endDate, close } = useSelectionStore();
@@ -9,7 +9,7 @@ const ModalRenderer = () => {
   if (!isOpen || !startDate || !endDate) return null;
 
   return (
-    <Modal
+    <SelectionModal
       isOpen={isOpen}
       onClose={close}
       startDate={startDate}
