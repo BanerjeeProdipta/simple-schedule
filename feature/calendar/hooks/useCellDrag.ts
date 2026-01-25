@@ -1,54 +1,66 @@
+'use client';
 import { useRef, useEffect } from 'react';
+import { useSelectionStore } from '@/store/selection';
 
-/**
- * Global drag state and cells registry
- */
 let isDragging = false;
 let dragStartIndex = -1;
-const cells: HTMLElement[] = [];
+let dragEndIndex = -1;
+const cells: Array<HTMLDivElement | null> = [];
+const cellDates: Date[] = [];
 
-/**
- * Hook returns a ref to attach to each cell.
- * Drag selection updates all cells in the global `cells` array.
- */
-export function useCellDrag(index: number) {
+export function useCellDrag(index: number, date: Date) {
   const ref = useRef<HTMLDivElement>(null);
+  const openSelection = useSelectionStore((s) => s.open);
 
-  /** Toggle selection based on start/end indices */
+  // Store this cell's date in the global array
+  cellDates[index] = date;
+
   function updateSelection(fromIdx: number, toIdx: number) {
     const start = Math.min(fromIdx, toIdx);
     const end = Math.max(fromIdx, toIdx);
 
-    for (let i = 0; i < cells.length; i++) {
-      const el = cells[i];
-      if (!el) continue;
-
+    cells.forEach((el, i) => {
+      if (!el) return;
       el.classList.toggle('bg-blue-300', i >= start && i <= end);
-    }
+    });
   }
 
   useEffect(() => {
     const el = ref.current;
     if (!el) return;
 
-    // Register cell
     cells[index] = el;
 
     const handlePointerDown = (e: PointerEvent) => {
       e.preventDefault();
       isDragging = true;
       dragStartIndex = index;
-      updateSelection(dragStartIndex, dragStartIndex);
+      dragEndIndex = index;
+      updateSelection(index, index);
     };
 
     const handlePointerEnter = () => {
       if (!isDragging) return;
-      updateSelection(dragStartIndex, index);
+      dragEndIndex = index;
+      updateSelection(dragStartIndex, dragEndIndex);
     };
 
     const handlePointerUp = () => {
+      if (!isDragging) return;
       isDragging = false;
+
+      const start = Math.min(dragStartIndex, dragEndIndex);
+      const end = Math.max(dragStartIndex, dragEndIndex);
+
+      const startDate = cellDates[start];
+      const endDate = cellDates[end];
+
+      console.log({ startDate, endDate, start, end });
+
+      openSelection(startDate, endDate);
+
       dragStartIndex = -1;
+      dragEndIndex = -1;
     };
 
     el.addEventListener('pointerdown', handlePointerDown);
@@ -56,11 +68,12 @@ export function useCellDrag(index: number) {
     document.addEventListener('pointerup', handlePointerUp);
 
     return () => {
+      cells[index] = null;
       el.removeEventListener('pointerdown', handlePointerDown);
       el.removeEventListener('pointerenter', handlePointerEnter);
       document.removeEventListener('pointerup', handlePointerUp);
     };
-  }, [index]);
+  }, [index, date, openSelection]);
 
-  return ref;
+  return { ref };
 }
